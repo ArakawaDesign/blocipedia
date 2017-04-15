@@ -1,4 +1,6 @@
 class WikisController < ApplicationController
+  before_action :authorize_user, except: [:index, :show, :edit, :update, :new, :create]
+  
   def index
     @wikis = Wiki.all
   end
@@ -8,6 +10,7 @@ class WikisController < ApplicationController
   end
 
   def new
+    allow_premium
     @wiki = Wiki.new
   end
   
@@ -52,6 +55,21 @@ class WikisController < ApplicationController
     else
       flash.now[:alert] = "There was an error deleting the wiki."
       render :show
+    end
+  end
+  
+  private
+  def authorize_user
+    unless current_user.admin?
+      flash[:alert] = "You must be an admin to do that."
+      redirect_to wikis_path
+    end
+  end
+  
+  def allow_premium
+    unless current_user.admin? || current_user.premium?
+      flash[:alert] = "Sign up for a premium account to create wikis!"
+      redirect_to wikis_path
     end
   end
 end
