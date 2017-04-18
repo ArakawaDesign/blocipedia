@@ -8,7 +8,11 @@ class WikisController < ApplicationController
   def show
     @wiki = Wiki.find(params[:id])
   end
-
+  
+  def downgrade
+    current_user.member!
+  end
+  
   def new
     allow_premium
     @wiki = Wiki.new
