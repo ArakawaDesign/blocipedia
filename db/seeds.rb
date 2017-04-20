@@ -15,10 +15,17 @@ end
 
 50.times do
     Wiki.create!(
-        title: Faker::GameOfThrones.character,
-        body: Faker::Lorem.paragraph
+        title: Faker::Food.ingredient,
+        body: Faker::Food.measurement,
+        #user_id: Faker::Number.unique.number(5)
     )
 end
+
+user = User.first
+user.update_attributes!(
+    email: 'arakawa.ryan@gmail.com', # replace this with your personal email
+    password: 'helloworld'
+)
 
 puts "Seed finished"
 puts "#{User.count} lists created"

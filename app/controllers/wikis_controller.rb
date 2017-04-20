@@ -2,19 +2,18 @@ class WikisController < ApplicationController
   before_action :authorize_user, except: [:index, :show, :edit, :update, :new, :create]
   
   def index
-    @wikis = Wiki.all
+      if current_user.member?
+        @wikis = Wiki.where(private: nil)
+      else
+        @wikis = Wiki.all
+      end
   end
 
   def show
     @wiki = Wiki.find(params[:id])
   end
   
-  def downgrade
-    current_user.member!
-  end
-  
   def new
-    allow_premium
     @wiki = Wiki.new
   end
   
@@ -22,7 +21,9 @@ class WikisController < ApplicationController
     @wiki = Wiki.new
     @wiki.title = params[:wiki][:title]
     @wiki.body = params[:wiki][:body]
-    
+    @wiki.user = current_user
+    @wiki.private = params[:wiki][:private]
+
     if @wiki.save
       flash[:notice] = "Wiki was saved."
       redirect_to @wiki
@@ -75,5 +76,10 @@ class WikisController < ApplicationController
       flash[:alert] = "Sign up for a premium account to create wikis!"
       redirect_to wikis_path
     end
+  end
+  
+  def make_private
+    @wiki = Wiki.new
+    @wiki.private = params[:private]
   end
 end

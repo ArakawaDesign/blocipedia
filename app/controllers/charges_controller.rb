@@ -1,15 +1,15 @@
 class ChargesController < ApplicationController
-    def new
-        @stripe_btn_data = {
-            key: "#{ Rails.configuration.stripe[:publishable_key] }",
+  def new
+    @stripe_btn_data = {
+      key: "#{ Rails.configuration.stripe[:publishable_key] }",
             description: "BigMoney Membership - #{current_user}",
             amount: @amount
-        }
-    end
+    }
+  end
     
-    def create
-    # Creates a Stripe Customer object, for associating
-    # with the charge
+  def create
+  # Creates a Stripe Customer object, for associating
+  # with the charge
     @amount = 1500
     
     customer = Stripe::Customer.create(
@@ -35,6 +35,11 @@ class ChargesController < ApplicationController
       redirect_to new_charge_path
     end
   def downgrade
+    @wikis = Wiki.where(user_id: current_user.id)
     current_user.member!
+    @wikis.all.each do |wiki|
+      wiki.private = nil
+      wiki.save
+    end
   end
 end

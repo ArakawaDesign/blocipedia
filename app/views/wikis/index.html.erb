@@ -5,7 +5,13 @@
             <div class="media">
                 <div class="media-body">
                     <h4 class="media-heading">
-                        <%= link_to wiki.title, wiki %>
+                        <% if current_user.admin? || current_user.premium? %>
+                            <%= link_to wiki.title, wiki %>
+                        <% else %>
+                            <% unless wiki.private? %>
+                                <%= link_to wiki.title, wiki %>
+                            <% end %>
+                        <% end %>
                     </h4>
                 </div>
             </div>
