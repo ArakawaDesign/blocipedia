@@ -37,9 +37,6 @@ class ChargesController < ApplicationController
   def downgrade
     @wikis = Wiki.where(user_id: current_user.id)
     current_user.member!
-    @wikis.all.each do |wiki|
-      wiki.private = nil
-      wiki.save
-    end
+    @wikis.update_all(private: false)
   end
 end

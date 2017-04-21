@@ -17,7 +17,7 @@ end
     Wiki.create!(
         title: Faker::Food.ingredient,
         body: Faker::Food.measurement,
-        #user_id: Faker::Number.unique.number(5)
+        private: false
     )
 end
 
