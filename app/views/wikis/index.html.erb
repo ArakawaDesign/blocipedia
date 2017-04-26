@@ -1,21 +1,9 @@
 <h1>All Wikis</h1>
 <div class="row">
     <div class="col-md-8">
-        <% @wikis.each do |wiki| %>
-            <div class="media">
-                <div class="media-body">
-                    <h4 class="media-heading">
-                        <% if current_user.admin? || current_user.premium? %>
-                            <%= link_to wiki.title, wiki %>
-                        <% else %>
-                            <% unless wiki.private? %>
-                                <%= link_to wiki.title, wiki %>
-                            <% end %>
-                        <% end %>
-                    </h4>
-                </div>
-            </div>
-        <% end %>
+        <%= render partial: "wiki", collection: @wikis %>
+        <h4>Collaborated Wikis</h4>
+        <%= render partial: "wiki", collection: @collab_wikis %>
     </div>
     <div class="col-md-4">
         <%= link_to "New Wiki", new_wiki_path(@wiki), class: 'btn btn-success' %>

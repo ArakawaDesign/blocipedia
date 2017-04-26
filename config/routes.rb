@@ -1,8 +1,15 @@
 Rails.application.routes.draw do
+  get 'collaborators/new'
+
   resources :wikis
   resources :charges, only: [:new, :create]
+  resources :wikis do
+    resources :collaborators, only: [:new, :create, :destroy]
+  end
   post 'downgrade' => 'charges#downgrade'
+  
   devise_for :users
+  
   get 'about' => 'welcome#about'
   
   root 'welcome#index'

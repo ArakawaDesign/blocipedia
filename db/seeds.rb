@@ -27,6 +27,12 @@ user.update_attributes!(
     password: 'helloworld'
 )
 
+user2 = User.last
+user2.update_attributes!(
+    email: 'lin1anna@yahoo.com',
+    password: 'helloworld'
+)
+
 puts "Seed finished"
 puts "#{User.count} lists created"
 puts "#{Wiki.count} items created"
